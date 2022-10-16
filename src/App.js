@@ -26,8 +26,8 @@ function App() {
     e.preventDefault();
     if (inputValue !== "") {
       const valueCapitalize =
-        inputValue[0].toUpperCase() + inputValue.substring(1);
-      const valueLower = inputValue.toLowerCase();
+        inputValue[0].toUpperCase() + inputValue.substring(1).trim();
+      const valueLower = inputValue.toLowerCase().trim();
       const result = data.filter((obj) => obj.verb === valueCapitalize);
       let serchVerb = result[0]?.verb;
       setTitle(serchVerb);
