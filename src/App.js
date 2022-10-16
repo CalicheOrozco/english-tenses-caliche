@@ -27,25 +27,26 @@ function App() {
     if (inputValue !== "") {
       const valueCapitalize =
         inputValue[0].toUpperCase() + inputValue.substring(1);
+      const valueLower = inputValue.toLowerCase();
       const result = data.filter((obj) => obj.verb === valueCapitalize);
       let serchVerb = result[0]?.verb;
       setTitle(serchVerb);
       setSearch(result);
       if (result.length === 0) {
-        const result = data.filter((obj) => obj.past === inputValue);
+        const result = data.filter((obj) => obj.past === valueLower);
         let serchVerb = result[0]?.verb;
         setTitle(serchVerb);
         setSearch(result);
         if (result.length === 0) {
           const result = data.filter(
-            (obj) => obj.pastParticiple === inputValue
+            (obj) => obj.pastParticiple === valueLower
           );
           let serchVerb = result[0]?.verb;
           setTitle(serchVerb);
           setSearch(result);
           if (result.length === 0) {
             const result = data.filter(
-              (obj) => obj.presentParticiple === inputValue
+              (obj) => obj.presentParticiple === valueLower
             );
             let serchVerb = result[0]?.verb;
             setTitle(serchVerb);
