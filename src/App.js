@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { ImSpinner8 } from "react-icons/im";
+import CardTable from "./components/CardTable";
 
 function App() {
   const [data, setData] = useState("");
@@ -10,6 +11,21 @@ function App() {
   const [errorMsg, setErrorMsg] = useState("");
   const [search, setSearch] = useState();
   const [title, setTitle] = useState("English Tenses by Caliche");
+
+  async function fetchData() {
+    const response = await fetch("/words.json");
+    if (response.ok) {
+      const data = await response.json();
+      setData(data);
+    }
+    if (!response.ok) {
+      setErrorMsg("Sorry, no found the dictionary");
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,6 +68,10 @@ function App() {
             setTitle(serchVerb);
             setSearch(result);
             if (result.length === 0) {
+              setAnimate(true);
+              setTimeout(() => {
+                setAnimate(false);
+              }, 500);
               setErrorMsg("Sorry, no found results");
               setSearch(false);
             }
@@ -76,13 +96,6 @@ function App() {
     const input = document.querySelector("input");
     input.value = "";
   };
-
-  const getData = useEffect(() => {
-    fetch("/words.json")
-      .then((res) => res.json())
-      .then((res) => setData(res));
-    //generateFrase();
-  }, []);
 
   // if data is false, return loading
   if (!data) {
@@ -132,7 +145,6 @@ function App() {
             </div>
           ) : (
             <div className="w-4/5 px-2 overflow-y-scroll">
-              lo
               <div className="flex flex-col lg:flex-row justify-between items-center lg:gap-x-6">
                 <div>
                   <h2 className="text-3xl font-bold text-white text-left">
@@ -206,317 +218,73 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Conjugation Cards */}
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Simple / Indefinite Present Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePresent[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePresent[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePresent[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Present Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Simple / Indefinite Present Tense"}
+                  conjugation={search[0]?.conjugationSimplePresent}
+                />
+                <CardTable
+                  title={"Present Continuous Tense"}
+                  conjugation={search[0]?.conjugationPresentContinuous}
+                />
               </div>
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Present Perfect Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfect[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfect[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfect[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Present Perfect Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfectContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfectContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPresentPerfectContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Present Perfect Tense"}
+                  conjugation={search[0]?.conjugationPresentPerfect}
+                />
+                <CardTable
+                  title={"Present Perfect Continuous Tense"}
+                  conjugation={search[0]?.conjugationPresentPerfectContinuous}
+                />
               </div>
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Simple Past Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePast[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePast[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationSimplePast[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Past Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Simple Past Tense"}
+                  conjugation={search[0]?.conjugationSimplePast}
+                />
+                <CardTable
+                  title={"Past Continuous Tense"}
+                  conjugation={search[0]?.conjugationPastContinuous}
+                />
               </div>
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Past Perfect Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfect[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfect[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfect[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Past Perfect Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfectContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfectContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationPastPerfectContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Past Perfect Tense"}
+                  conjugation={search[0]?.conjugationPastPerfect}
+                />
+                <CardTable
+                  title={"Past Perfect Continuous Tense"}
+                  conjugation={search[0]?.conjugationPastPerfectContinuous}
+                />
               </div>
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Simple Future Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuture[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuture[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuture[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Future Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFutureContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFutureContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFutureContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Future Simple Tense"}
+                  conjugation={search[0]?.conjugationFuture}
+                />
+                <CardTable
+                  title={"Future Continuous Tense"}
+                  conjugation={search[0]?.conjugationFutureContinuous}
+                />
               </div>
+
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Future Perfect Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfect[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfect[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfect[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-                <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
-                  <h2 className="text-3xl text-black font-bold text-left">
-                    Future Perfect Continuous Tense
-                  </h2>
-                  <table class="table-auto w-full my-7">
-                    <thead>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfectContinuous[0]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfectContinuous[1]}
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="p-4 text-black border-2 border-black">
-                          {search[0]?.conjugationFuturePerfectContinuous[2]}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
+                <CardTable
+                  title={"Future Perfect Tense"}
+                  conjugation={search[0]?.conjugationFuturePerfect}
+                />
+                <CardTable
+                  title={"Future Perfect Continuous Tense"}
+                  conjugation={search[0]?.conjugationFuturePerfectContinuous}
+                />
               </div>
             </div>
           )}
