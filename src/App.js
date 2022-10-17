@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { ImSpinner8 } from "react-icons/im";
 import CardTable from "./components/CardTable";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [data, setData] = useState("");
@@ -100,7 +101,7 @@ function App() {
   // if data is false, return loading
   if (!data) {
     return (
-      <div className="loading w-full h-screen bg-slate-900 bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center">
+      <div className="loading w-full min-h-screen bg-slate-900 bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center">
         <ImSpinner8 className="loading-icon text-5xl animate-spin text-white" />
       </div>
     );
@@ -108,8 +109,10 @@ function App() {
 
   return (
     <div className="App">
-      <div className="w-full bg-slate-900 h-screen flex flex-col items-center justify-center lg:px-0">
-        <div className="absolute w-full h-screen flex flex-col items-center justify-center px-4 lg:px-0">
+      <div className="w-full bg-slate-900 min-h-screen flex flex-col items-center justify-center lg:px-0">
+        <div className="w-full flex flex-col items-center justify-center px-4 lg:px-0">
+          <div className="w-full flex flex-col items-center justify-center">
+          
           <h1 className="text-5xl text-white font-bold p-4">{title}</h1>
           {errorMsg && (
             <div className="text-white w-4/5 my-3 bg-[#ff208c] p-4 capitalize rounded-md">
@@ -123,10 +126,10 @@ function App() {
             } h-16 bg-slate-50 shadow-2xl  w-4/5
           rounded-full backdrop-blur-1xl mb-8`}
           >
-            <div className=" h-full relative flex items-center justify-between p-2">
+            <div className="flex items-center justify-between p-2">
               <input
                 onChange={(e) => handleSearch(e)}
-                className="flex-1 bg-transparent outline-none placeholder:text-slate-900 text-slate-900 text-bold font-light pl-6 h-full"
+                className="flex-1 bg-transparent outline-none placeholder:text-slate-900 text-slate-900 text-bold font-light pl-6"
                 type="text"
                 placeholder="Search by word..."
               />
@@ -138,13 +141,14 @@ function App() {
               </button>
             </div>
           </form>
+          </div>
           {/* Card */}
           {!search ? null : loading ? (
-            <div className="loading w-full h-screen bg-slate-900 bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center">
+            <div className="loading w-full bg-slate-900 bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center">
               <ImSpinner8 className="loading-icon text-5xl animate-spin text-white" />
             </div>
           ) : (
-            <div className="w-4/5 px-2 overflow-y-scroll">
+            <div className="w-4/5 px-2">
               <div className="flex flex-col lg:flex-row justify-between items-center lg:gap-x-6">
                 <div>
                   <h2 className="text-3xl font-bold text-white text-left">
