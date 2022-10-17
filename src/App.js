@@ -126,8 +126,13 @@ function App() {
             </div>
           </form>
           {/* Card */}
-          {!search ? null : (
+          {!search ? null : loading ? (
+            <div className="loading w-full h-screen bg-slate-900 bg-no-repeat bg-cover bg-center flex flex-col justify-center items-center">
+              <ImSpinner8 className="loading-icon text-5xl animate-spin text-white" />
+            </div>
+          ) : (
             <div className="w-4/5 px-2 overflow-y-scroll">
+              lo
               <div className="flex flex-col lg:flex-row justify-between items-center lg:gap-x-6">
                 <div>
                   <h2 className="text-3xl font-bold text-white text-left">
@@ -201,7 +206,6 @@ function App() {
                   </div>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
@@ -254,7 +258,6 @@ function App() {
                   </table>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
@@ -307,7 +310,6 @@ function App() {
                   </table>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
@@ -360,7 +362,6 @@ function App() {
                   </table>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
@@ -413,7 +414,6 @@ function App() {
                   </table>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
@@ -466,7 +466,6 @@ function App() {
                   </table>
                 </div>
               </div>
-
               <div className="flex flex-col lg:flex-row items-center  justify-between lg:gap-x-6">
                 <div className="p-4 w-full md:w-1/2 my-4 bg-slate-50 shadow-2xl rounded-2xl">
                   <h2 className="text-3xl text-black font-bold text-left">
