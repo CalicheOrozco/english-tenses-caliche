@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { ImSpinner8 } from "react-icons/im";
 import CardTable from "./components/CardTable";
-import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [data, setData] = useState("");
