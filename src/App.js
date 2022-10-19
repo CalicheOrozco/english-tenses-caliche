@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { ImSpinner8 } from "react-icons/im";
 import CardTable from "./components/CardTable";
+import Modal from "./components/Modal";
+import { ModalContext } from "./contexts/ModalContext";
 
 function App() {
   const [data, setData] = useState("");
@@ -11,6 +13,8 @@ function App() {
   const [errorMsg, setErrorMsg] = useState("");
   const [search, setSearch] = useState();
   const [title, setTitle] = useState("English Tenses by Caliche");
+  const [defination, setDefination] = useState();
+  const [openModal, setOpenModal] = useState(false);
 
   async function fetchData() {
     const response = await fetch("/words.json");
@@ -20,6 +24,14 @@ function App() {
     }
     if (!response.ok) {
       setErrorMsg("Sorry, no found the dictionary");
+    }
+  }
+
+  async function fetchDictonary(API) {
+    const response = await fetch(API);
+    if (response.ok) {
+      let data = await response.json();
+      setDefination(data);
     }
   }
 
@@ -48,11 +60,17 @@ function App() {
       let serchVerb = result[0]?.verb;
       setTitle(serchVerb);
       setSearch(result);
+      fetchDictonary(
+        `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
+      );
       if (result.length === 0) {
         const result = data.filter((obj) => obj.past === valueLower);
         let serchVerb = result[0]?.verb;
         setTitle(serchVerb);
         setSearch(result);
+        fetchDictonary(
+          `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
+        );
         if (result.length === 0) {
           const result = data.filter(
             (obj) => obj.pastParticiple === valueLower
@@ -60,6 +78,9 @@ function App() {
           let serchVerb = result[0]?.verb;
           setTitle(serchVerb);
           setSearch(result);
+          fetchDictonary(
+            `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
+          );
           if (result.length === 0) {
             const result = data.filter(
               (obj) => obj.presentParticiple === valueLower
@@ -67,6 +88,9 @@ function App() {
             let serchVerb = result[0]?.verb;
             setTitle(serchVerb);
             setSearch(result);
+            fetchDictonary(
+              `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
+            );
             if (result.length === 0) {
               setAnimate(true);
               setTimeout(() => {
@@ -111,35 +135,64 @@ function App() {
       <div className="w-full bg-slate-900 min-h-screen flex flex-col items-center justify-center lg:px-0">
         <div className="w-full flex flex-col items-center justify-center px-4 lg:px-0">
           <div className="w-full flex flex-col items-center justify-center">
-          
-          <h1 className="text-5xl text-white font-bold p-4">{title}</h1>
-          {errorMsg && (
-            <div className="text-white w-4/5 my-3 bg-[#ff208c] p-4 capitalize rounded-md">
-              {errorMsg}
+            <div className="w-4/5 flex flex-col items-center gap-y-2 justify-center p-4 text-xl text-white">
+              <h1 className="text-5xl text-left font-bold">{title}</h1>
+              {defination ? (
+                <>
+                  <ModalContext.Provider value={{ openModal, setOpenModal }}>
+                    <Modal meanings={defination[0]?.meanings} title={title} />
+                  </ModalContext.Provider>
+                  <h2 className="font-bold">{`phonetic: ${defination[0]?.phonetic}`}</h2>
+                  <audio
+                    src={`${defination[0]?.phonetics[0]?.audio}`}
+                    controls
+                  ></audio>
+                  <div>
+                    <h3>
+                      {defination[0]?.meanings[0]?.definitions[0]?.definition}
+                    </h3>
+                    {defination[0]?.meanings[0]?.definitions[0]?.example ? (
+                      <p><span className="font-bold">Example: </span>{defination[0]?.meanings[0]?.definitions[0]?.example}</p>
+                    ) : null}
+                    <button
+                      className="cursor-pointer underline text-green-300"
+                      onClick={() => {
+                        setOpenModal(!openModal);
+                      }}
+                    >
+                      more meanings...
+                    </button>
+                  </div>
+                </>
+              ) : null}
             </div>
-          )}
-          {/* Form */}
-          <form
-            className={`${
-              animate ? "animate-shake" : "animate-none"
-            } h-16 bg-slate-50 shadow-2xl  w-4/5
+            {errorMsg && (
+              <div className="text-white w-4/5 my-3 bg-[#ff208c] p-4 capitalize rounded-md">
+                {errorMsg}
+              </div>
+            )}
+            {/* Form */}
+            <form
+              className={`${
+                animate ? "animate-shake" : "animate-none"
+              } h-16 bg-slate-50 shadow-2xl  w-4/5
           rounded-full backdrop-blur-1xl mb-8`}
-          >
-            <div className="flex items-center justify-between p-2">
-              <input
-                onChange={(e) => handleSearch(e)}
-                className="flex-1 bg-transparent outline-none placeholder:text-slate-900 text-slate-900 text-bold font-light pl-6"
-                type="text"
-                placeholder="Search by word..."
-              />
-              <button
-                onClick={(e) => handleSubmit(e)}
-                className="bg-[#1ab8ed] hover:bg-[#15abdd] w-20 h-12 rounded-full flex justify-center items-center transition"
-              >
-                <IoMdSearch className="text-2xl text-white" />
-              </button>
-            </div>
-          </form>
+            >
+              <div className="flex items-center justify-between p-2">
+                <input
+                  onChange={(e) => handleSearch(e)}
+                  className="flex-1 bg-transparent outline-none placeholder:text-slate-900 text-slate-900 text-bold font-light pl-6"
+                  type="text"
+                  placeholder="Search by word..."
+                />
+                <button
+                  onClick={(e) => handleSubmit(e)}
+                  className="bg-[#1ab8ed] hover:bg-[#15abdd] w-20 h-12 rounded-full flex justify-center items-center transition"
+                >
+                  <IoMdSearch className="text-2xl text-white" />
+                </button>
+              </div>
+            </form>
           </div>
           {/* Card */}
           {!search ? null : loading ? (
