@@ -1,4 +1,4 @@
-import { Fragment, useContext, useRef, useState } from "react";
+import { Fragment, useContext, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ModalContext } from "../contexts/ModalContext";
 import { BiX } from "react-icons/bi";
