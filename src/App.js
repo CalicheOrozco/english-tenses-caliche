@@ -65,8 +65,6 @@ function App() {
       );
       if (result.length === 0) {
         const result = data.filter((obj) => obj.past === valueLower);
-        let serchVerb = result[0]?.verb;
-        setTitle(serchVerb);
         setSearch(result);
         fetchDictonary(
           `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
@@ -75,8 +73,6 @@ function App() {
           const result = data.filter(
             (obj) => obj.pastParticiple === valueLower
           );
-          let serchVerb = result[0]?.verb;
-          setTitle(serchVerb);
           setSearch(result);
           fetchDictonary(
             `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
@@ -85,8 +81,6 @@ function App() {
             const result = data.filter(
               (obj) => obj.presentParticiple === valueLower
             );
-            let serchVerb = result[0]?.verb;
-            setTitle(serchVerb);
             setSearch(result);
             fetchDictonary(
               `https://api.dictionaryapi.dev/api/v2/entries/en_US/${valueLower}`
@@ -98,6 +92,7 @@ function App() {
               }, 500);
               setErrorMsg("Sorry, no found results");
               setSearch(false);
+              setDefination(false);
             }
           }
         }
