@@ -138,16 +138,22 @@ function App() {
                     <Modal meanings={defination[0]?.meanings} title={title} />
                   </ModalContext.Provider>
                   <h2 className="font-bold">{`phonetic: ${defination[0]?.phonetic}`}</h2>
-                  <audio
-                    src={`${defination[0]?.phonetics[0]?.audio}`}
-                    controls
-                  ></audio>
+                  {defination[0]?.phonetics[0]?.audio ? (
+                    <audio
+                      src={`${defination[0]?.phonetics[0]?.audio}`}
+                      controls
+                    />
+                  ) : null}
+
                   <div>
                     <h3>
                       {defination[0]?.meanings[0]?.definitions[0]?.definition}
                     </h3>
                     {defination[0]?.meanings[0]?.definitions[0]?.example ? (
-                      <p><span className="font-bold">Example: </span>{defination[0]?.meanings[0]?.definitions[0]?.example}</p>
+                      <p>
+                        <span className="font-bold">Example: </span>
+                        {defination[0]?.meanings[0]?.definitions[0]?.example}
+                      </p>
                     ) : null}
                     <button
                       className="cursor-pointer underline text-green-300"
