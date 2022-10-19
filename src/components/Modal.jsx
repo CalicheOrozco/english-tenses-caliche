@@ -73,6 +73,7 @@ function Modal({ meanings, title }) {
                 <div className="mt-2">
                   {meanings.map((meaning) =>
                     meaning.definitions.map((def, index) => (
+                      index > 0 ? 
                       <div key={index}>
                         <p className="font-bold text-gray-500">
                           {`${meaning.partOfSpeech}: ${def.definition}`}
@@ -83,6 +84,7 @@ function Modal({ meanings, title }) {
                           </p>
                         ) : null}
                       </div>
+                      : null
                     ))
                   )}
                 </div>
